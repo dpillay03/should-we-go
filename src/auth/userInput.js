@@ -1,5 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import InputFields from './inputField';
+import Results from './results';
+import homeHero from '../assets/home-hero.png';
+import siteLogo from '../assets/swg-logo.png';
+import MobileMenu from '../components/mobileMenu';
+import { RiMenu5Fill } from 'react-icons/ri';
+
 const weatherToken = process.env.REACT_APP_WEATHER_TOKEN;
 const seatGeekToken = process.env.REACT_APP_SEATGEEK_TOKEN;
 const states = [
@@ -62,6 +69,9 @@ function UserInput() {
   );
   const [events, setEvents] = useState([]);
   const [weatherData, setWeatherData] = useState(null);
+  const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [headerPosition, setHeaderPosition] = useState('fixed');
 
   const handleStateChange = (e) => {
     setSelectedState(e.target.value);
@@ -125,11 +135,12 @@ function UserInput() {
               if (response.data.forecast.forecastday[0].hour[militaryHour]) {
                 const weatherData =
                   response.data.forecast.forecastday[0].hour[militaryHour];
-                const { temp_f, condition } = weatherData;
+                const { temp_f, condition, code } = weatherData;
 
                 event.weatherData = {
                   temperature: temp_f,
                   conditions: condition.text,
+                  code: condition.code,
                 };
 
                 setEvents((prevEvents) => [...prevEvents]);
@@ -185,71 +196,85 @@ function UserInput() {
       console.error('Error fetching weather data:', error);
     }
   };
+  const closeMobileMenu = () => {
+    setMobileMenuVisible(false);
+  };
+  useEffect(() => {
+    setHeaderPosition(overlayVisible ? 'relative' : 'fixed');
+  }, [overlayVisible]);
 
   return (
-    <div>
-      <label htmlFor='state'>Select a state:</label>
-      <select id='state' value={selectedState} onChange={handleStateChange}>
-        <option value=''>Select a state</option>
-        {states.map((state) => (
-          <option key={state.abbreviation} value={state.abbreviation}>
-            {state.name} ({state.abbreviation})
-          </option>
-        ))}
-      </select>
+    <>
+      {events.length === 0 ? (
+        <div className='home-container'>
+          <div className='col'>
+            <h1 className='site-header'>Should We Go?</h1>
+            <h2 className='site-subheader'>
+              Last-minute plans, instant results. Your go-to for events and
+              weather, right when you need it.
+            </h2>
+            <InputFields
+              states={states}
+              handleStateChange={handleStateChange}
+              handleDateChange={handleDateChange}
+              fetchEvents={fetchEvents}
+            />
+          </div>
+          <div className='col'>
+            <img
+              src={homeHero}
+              alt='Friends having fun at an event'
+              id='home-hero'
+            />
+          </div>
+          <p className='created-by'>
+            App created by <a href='https://danielpillay.com'>Daniel Pillay</a>
+          </p>
+        </div>
+      ) : (
+        <div className='results'>
+          <div
+            className={`overlay ${mobileMenuVisible ? 'visible' : ''}`}
+            onClick={closeMobileMenu}
+          ></div>
+          <div className='header' style={{ position: headerPosition }}>
+            <img src={siteLogo} id='site-logo' alt='Should We Go logo.' />
+            <div className='desktop-header-input'>
+              <InputFields
+                states={states}
+                handleStateChange={handleStateChange}
+                handleDateChange={handleDateChange}
+                fetchEvents={fetchEvents}
+              />
+            </div>
+            <RiMenu5Fill
+              size={50}
+              id='mobile-menu-icon'
+              onClick={() => setMobileMenuVisible(!mobileMenuVisible)}
+            />
+          </div>
 
-      <label htmlFor='date'>Select a date:</label>
-      <input
-        type='date'
-        id='date'
-        value={selectedDate}
-        onChange={handleDateChange}
-      />
-
-      <button onClick={fetchEvents}>Search</button>
-
-      {events.length > 0 && (
-        <div>
-          <h2>Events in {selectedState}</h2>
-          <ul>
-            {events.map((event) => (
-              <li key={event.id}>
-                <strong>Date:</strong> {formatDateTime(event.datetime_local)}
-                <br />
-                <strong>Venue:</strong> {event.venue.name}
-                <br />
-                <strong>Location:</strong> {event.venue.display_location}
-                <br />
-                <strong>Venue ID:</strong> {event.venue.id}
-                <br />
-                <strong>Event Categories:</strong>
-                <ul>
-                  {event.taxonomies.map((taxonomy) => (
-                    <li key={taxonomy.id}>{taxonomy.name}</li>
-                  ))}
-                </ul>
-                {event.weatherData && event.weatherData.temperature && (
-                  <div>
-                    <strong>Temperature:</strong>
-                    {event.weatherData.temperature} °F
-                    <br />
-                    <strong>Weather conditions: </strong>
-                    {event.weatherData.conditions}
-                  </div>
-                )}
-                <strong>Learn More link: </strong>{' '}
-                <a href={event.url} target='_blank' rel='noopener noreferrer'>
-                  Learn More
-                </a>
-                <br />
-                <br />
-                <br />
-              </li>
-            ))}
-          </ul>
+          <MobileMenu
+            states={states}
+            handleStateChange={handleStateChange}
+            handleDateChange={handleDateChange}
+            fetchEvents={fetchEvents}
+            isVisible={mobileMenuVisible}
+            closeMobileMenu={closeMobileMenu}
+          />
+          <div className='app-container'>
+            <h1 className='site-header result'>
+              Events in{' '}
+              {
+                states.find((state) => state.abbreviation === selectedState)
+                  ?.name
+              }
+            </h1>
+            <Results events={events} formatDateTime={formatDateTime} />
+          </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 export default UserInput;
