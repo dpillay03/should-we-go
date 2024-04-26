@@ -336,6 +336,7 @@ svg#mobile-menu-icon {
 
 p.created-by {
   padding-top: 100px;
+  padding-bottom: 100px;
   text-align: center;
   font-family: sans-serif;
   opacity: .5;
@@ -379,6 +380,12 @@ p.created-by a {
 }
 
 @media (max-width:767px) {
+  .App {
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
   .home-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -387,6 +394,8 @@ p.created-by a {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90vw;
+    text-align: center;
   }
 
   h1.site-header.result {
@@ -403,16 +412,18 @@ p.created-by a {
   }
 
   .home-container select#state {
-    width: 350px;
+    width: 90%;
   }
 
   .home-container input#date {
-    width: 350px;
+    width: 90%;
   }
 
   .home-container button#search {
-    width: 350px;
+    width: 90%;
+    margin: 0 auto;
   }
+
 
   .home-container .site-subheader {
     text-align: center;
@@ -519,7 +530,7 @@ p.created-by a {
   img#mobile-nav-logo {
     width: 100px;
     position: absolute;
-    top: 100px;
+    top: 50px;
     left: 0;
     right: 0;
     margin: auto;
@@ -534,7 +545,7 @@ p.created-by a {
     width: 350px;
     margin: 0;
     position: absolute;
-    top: 225px;
+    top: 160px;
     left: 0;
     right: 0;
     margin-left: auto;
