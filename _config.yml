@@ -1,9 +1,0 @@
-# Site settings
-title: "Should We Go"
-description: "Event planning app that allows you to check the weather at the time of the event."
-baseurl: "/should-we-go" # the subpath of your site, e.g. /blog/
-url: "https://dpillay03.github.io" # the base hostname & protocol for your site
-
-# Build settings
-theme: jekyll-theme-primer
-markdown: kramdown
