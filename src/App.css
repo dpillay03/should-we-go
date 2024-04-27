@@ -23,7 +23,9 @@
 }
 
 .results {
-  background: white;
+  background: #fff;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 img#site-logo {
