@@ -72,7 +72,7 @@ function UserInput() {
   const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [headerPosition, setHeaderPosition] = useState('fixed');
-
+  const [searchClicked, setSearchClicked] = useState(false);
   const handleStateChange = (e) => {
     setSelectedState(e.target.value);
   };
@@ -104,6 +104,7 @@ function UserInput() {
         .then(async (response) => {
           console.log('Events:', response.data.events);
           setEvents(response.data.events);
+          setSearchClicked(true);
           for (const event of response.data.events) {
             const {
               venue: { location },
@@ -155,6 +156,7 @@ function UserInput() {
         .catch((error) => {
           console.error('Error:', error);
         });
+      closeMobileMenu();
     } else {
       console.log('Please select a state and date.');
     }
@@ -263,13 +265,15 @@ function UserInput() {
             closeMobileMenu={closeMobileMenu}
           />
           <div className='app-container'>
-            <h1 className='site-header result'>
-              Events in{' '}
-              {
-                states.find((state) => state.abbreviation === selectedState)
-                  ?.name
-              }
-            </h1>
+            {searchClicked && ( // Render only when search button is clicked
+              <h1 className='site-header result'>
+                Events in the state of{' '}
+                {
+                  states.find((state) => state.abbreviation === selectedState)
+                    ?.name
+                }
+              </h1>
+            )}
             <Results events={events} formatDateTime={formatDateTime} />
           </div>
         </div>
