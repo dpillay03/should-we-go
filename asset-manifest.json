@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/should-we-go/static/css/main.6c8caf29.css",
-    "main.js": "/should-we-go/static/js/main.dbf00cdb.js",
+    "main.css": "/should-we-go/static/css/main.1a2857a8.css",
+    "main.js": "/should-we-go/static/js/main.9ee980b7.js",
     "static/js/453.5565870f.chunk.js": "/should-we-go/static/js/453.5565870f.chunk.js",
     "static/media/home-hero.png": "/should-we-go/static/media/home-hero.a0fcc44645d60d59a45b.png",
     "static/media/swg-logo.png": "/should-we-go/static/media/swg-logo.98c5ac54d0a3c4246e22.png",
     "index.html": "/should-we-go/index.html",
-    "main.6c8caf29.css.map": "/should-we-go/static/css/main.6c8caf29.css.map",
-    "main.dbf00cdb.js.map": "/should-we-go/static/js/main.dbf00cdb.js.map",
+    "main.1a2857a8.css.map": "/should-we-go/static/css/main.1a2857a8.css.map",
+    "main.9ee980b7.js.map": "/should-we-go/static/js/main.9ee980b7.js.map",
     "453.5565870f.chunk.js.map": "/should-we-go/static/js/453.5565870f.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6c8caf29.css",
-    "static/js/main.dbf00cdb.js"
+    "static/css/main.1a2857a8.css",
+    "static/js/main.9ee980b7.js"
   ]
 }
